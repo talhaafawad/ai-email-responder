@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Email Responder</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    textarea, select, button { width: 100%; margin-top: 10px; padding: 10px; font-size: 16px; }
+    #reply { height: 150px; }
+  </style>
+</head>
+<body>
+  <h1>AI Support Email Responder</h1>
+
+  <label>Paste customer email:</label>
+  <textarea id="email" rows="6" placeholder="Enter customer message here..."></textarea>
+
+  <label>Select reply tone:</label>
+  <select id="tone">
+    <option value="friendly">Friendly</option>
+    <option value="apologetic">Apologetic</option>
+    <option value="professional">Professional</option>
+    <option value="excited">Excited</option>
+  </select>
+
+  <button onclick="generateReply()">Generate AI Reply</button>
+
+  <label>Generated Reply:</label>
+  <textarea id="reply" readonly></textarea>
+
+  <script>
+    async function generateReply() {
+      const email = document.getElementById("email").value;
+      const tone = document.getElementById("tone").value;
+
+      const res = await fetch("https://YOUR-BACKEND-URL.onrender.com/generate-reply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, tone }),
+      });
+
+      const data = await res.json();
+      document.getElementById("reply").value = data.reply || "Error: " + data.error;
+    }
+  </script>
+</body>
+</html>
