@@ -32,7 +32,7 @@
       const email = document.getElementById("email").value;
       const tone = document.getElementById("tone").value;
 
-      const res = await fetch("https://YOUR-BACKEND-URL.onrender.com/generate-reply", {
+      const res = await fetch("https://ai-email-responder-mlpl.onrender.com/generate-reply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, tone }),
