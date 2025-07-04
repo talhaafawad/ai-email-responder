@@ -4,15 +4,25 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-CORS(app, origins="*")
+CORS(app)  # Allow all origins for testing; tighten this for production
 
-client = OpenAI()
+# Get API key from environment variable
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise Exception("OPENAI_API_KEY environment variable not set")
+
+# Initialize OpenAI client with your API key
+client = OpenAI(api_key=api_key)
 
 @app.route('/generate-reply', methods=['POST'])
 def generate_reply():
     data = request.json
     prompt = data.get("email")
 
+    if not prompt:
+        return jsonify({"error": "Missing 'email' in request body"}), 400
+
+    # Create chat completion
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
